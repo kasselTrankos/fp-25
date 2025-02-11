@@ -1,9 +1,6 @@
-const { curry } = require('ramda');
+import { curry } from "ramda";
 const liftN = () => {}
-// liftA :: (a -> b) -> T -> T -> T
-const liftA2 = curry((g, f1, f2) => f1.map(g).ap(f2));
 
-module.exports = {
-  liftN,
-  liftA2
-}
+// lift2 :: Applicative f => (a -> b -> c, f a, f b) -> f c
+export const liftA2 = curry((f, a, b) => b.ap(a.map(f)))
+

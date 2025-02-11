@@ -1,6 +1,7 @@
 import { curry } from "ramda";
 import Sum from "./lib/sum.js";
 import Task from "./lib/Task.js";
+import { liftA2 } from "./utils/index.js";
 // const { Sum } = require("./lib/sum");
 // const { liftA2 } = require('./utils');
 // const logger = msg => x =>  console.log(`${msg}: ${x}`);
@@ -45,7 +46,10 @@ import Task from "./lib/Task.js";
 // // to m['fantasy-land/chain'](x => f(x)['fantasy-land/chain'](g)) (associativity)
 // // Task.of(1).chain(sum1).chain(sum2).fork(logger('[OK 1 ]'), logger('[KO 1]')) // Hello
 // const one = Sum.of(1).concat(1).chain(x => Sum.of(x + 1));
-const two = Sum.of(1).chain(x => Sum.of(x +1))
-console.log({two})
+const two = Sum.of(1).chain(x => Sum.of(x +1)).ap(Sum.of(x => x + 1));
+const one = liftA2(x => y => x + y, Sum.of(5), Sum.of(2));
+const three = liftA2(x => y => x + y, Task.of(5), Task.of(2));
+three.fork(console.log);
+console.log({two, one})
 
 
