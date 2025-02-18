@@ -31,8 +31,8 @@ const tt = new Reader(x => x + 1).map(x =>  x + 1).map(x => x * 10).run(1);
 
 // console.log(tt, '0000')
 const {Just, Nothing} = Maybe;
-const ll = Just(90).map(x => x +1);
-console.log({ll});
+const ll = Just(90).map(x => x +1).chain(x => Just(90 + x)).ap(Just(x => x -129)).alt(Nothing);
+console.log({ll}, Nothing.alt(Just('0')));
 
 
 
