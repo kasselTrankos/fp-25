@@ -4,6 +4,7 @@ import Writer from "./lib/writer.js";
 import Reader from "./lib/reader.js";
 import Maybe from "./lib/maybe.js";
 import { insideOut, logger, parse } from "./utils/index.js";
+import { stream, CoFreeF, Identity } from "./utils/stream.js";
 
 const taskRes = curry((time, x) => new Task((_, resolve)=> {
   setTimeout(()=> {
@@ -32,9 +33,17 @@ const tt = new Reader(x => x + 1).map(x =>  x + 1).map(x => x * 10).run(1);
 // console.log(tt, '0000')
 const {Just, Nothing} = Maybe;
 const ll = Just(90).map(x => x +1).chain(x => Just(90 + x)).ap(Just(x => x -129)).alt(Nothing);
-console.log({ll}, Nothing.alt(Just('0')));
+// console.log({ll}, Nothing.alt(Just('0')));
+
+var fLazy = n => stream(n, ()=>fLazy(n + 1)); 
+console.log(fLazy(10).next().next().next().current) //2
 
 
+
+var f = n => CoFreeF( n + 1, () => Identity(f(n + 1)));
+const strm = f(0);
+var y = strm.next().value.next().value.map(x => x * 2).next().value;
+console.log(y);
 
 
 
